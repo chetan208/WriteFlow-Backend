@@ -25,7 +25,7 @@ const userRoute= require("./routes/user");
 const blogRoute=require("./routes/blog")
 
 app.use(cors({
-  origin: "https://my-blog-two-snowy.vercel.app",  // frontend URL
+  origin: process.env.FRONT_END_URL,  // frontend URL
   credentials: true  // if you are sending cookies
 }));
 

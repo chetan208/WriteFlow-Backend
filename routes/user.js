@@ -71,7 +71,8 @@ router.post('/login', async (req, res) => {
             .cookie("token", token, {
                 httpOnly: true,   // JS se access nahi hoga (secure)
                 secure:true,
-                sameSite: "None",  // csrf protection
+                sameSite: "None",
+                path: "/",  // csrf protection
                 maxAge: 24 * 60 * 60 * 1000, // 1 day
             })
             .status(200)
@@ -102,6 +103,7 @@ router.post('/logout',(req,res)=>{
   httpOnly: true,
   secure: true,
   sameSite: "none",
+  path: "/"
 });
 res.json({ success: true });
 })

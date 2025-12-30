@@ -71,7 +71,7 @@ router.post('/login', async (req, res) => {
             .cookie("token", token, {
                 httpOnly: true,   // JS se access nahi hoga (secure)
                 secure: false,    // true only in https
-                sameSite: "lax",  // csrf protection
+                sameSite: "None",  // csrf protection
                 maxAge: 24 * 60 * 60 * 1000, // 1 day
             })
             .status(200)

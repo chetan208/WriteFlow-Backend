@@ -26,7 +26,7 @@ const blogRoute=require("./routes/blog")
 
 app.use(cors(
     {
-  origin: "http://localhost:5173",     // reflect request origin
+  origin: process.env.FRONT_END_URL,     // reflect request origin
   credentials: true // allow cookies
   }
 ));

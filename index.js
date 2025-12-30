@@ -2,7 +2,7 @@ require("dotenv").config();
 const express= require("express");
 const mongoose=require("mongoose")
 const cookieParser=require("cookie-parser");
-const {checkForAuthenticationCookie}=require('./middelwares/checkForAuthentication')
+
 
 
 const app = express();
@@ -22,7 +22,14 @@ app.use(cookieParser())
 const cors = require("cors");
 
 const userRoute= require("./routes/user");
-app.use(cors());
+const blogRoute=require("./routes/blog")
+
+app.use(cors(
+    {
+  origin: "http://localhost:5173",     // reflect request origin
+  credentials: true // allow cookies
+  }
+));
 
 
 app.get("/",
@@ -31,5 +38,6 @@ app.get("/",
 })
 
 app.use("/api",userRoute);
+app.use("/api/blog",blogRoute)
 
 app.listen(PORT,()=>(console.log("server started at Port ", PORT)))

@@ -1,35 +1,37 @@
 const { validateToken } = require("../services/auth");
 
-function checkForAuthenticationCookieMiddelware(cookieName) {
-    return (req, res, next) => {
+function checkForAuthenticationCookie(req,cookieName) {
         const cookieValue = req.cookies[cookieName];
+
         if (!cookieValue) {
             return (
-                res.status(401).json(
                     {
                         success: false,
                         message: "Authentication required"
                     }
-                )
             )
         }
 
         try {
             const payload = validateToken(cookieValue);
-            req.user = payload;
-            return next();
+            return{
+                ...payload,
+                success:true,
+                message:"user logged in"
+            } 
 
         } catch (error) {
             return (
-                res.status(401).json({
+                {
                     success: false,
                     message: error.message
                 })
-            )
+            
         }
     }
 
+
+
+module.exports = {
+    checkForAuthenticationCookie,
 }
-
-
-module.exports =checkForAuthenticationCookieMiddelware;

@@ -5,7 +5,9 @@ const secret = process.env.SECRET;
 function createTokenForUser(user){
    const payload={
     _id:user._id,
-    email:user.email
+    email:user.email,
+    name:user.fullName,
+    avatar:user.avatar,
    };
 
    const token=JWT.sign(payload,secret);
@@ -13,6 +15,7 @@ function createTokenForUser(user){
 }
 
 function validateToken(token){
+    
     const payload= JWT.verify(token,secret);
     return payload;
 }

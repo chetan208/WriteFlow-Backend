@@ -26,7 +26,7 @@ const blogRoute=require("./routes/blog")
 
 app.use(cors(
     {
-  origin: process.env.FRONT_END_URL,     // reflect request origin
+  origin:"https://my-blog-two-snowy.vercel.app",     // reflect request origin
   credentials: true // allow cookies
   }
 ));

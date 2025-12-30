@@ -1,6 +1,6 @@
 const { validateToken } = require("../services/auth");
 
-function checkForAuthenticationCookie(req,cookieName) {
+function  checkForAuthenticationCookie(req,cookieName) {
         const cookieValue = req.cookies[cookieName];
 
         if (!cookieValue) {
@@ -13,7 +13,7 @@ function checkForAuthenticationCookie(req,cookieName) {
         }
 
         try {
-            const payload = validateToken(cookieValue);
+            const payload =  validateToken(cookieValue);
             return{
                 ...payload,
                 success:true,

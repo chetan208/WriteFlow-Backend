@@ -88,8 +88,9 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.get('/checkauth',(req,res)=>{
-   const payload= checkForAuthenticationCookie(req,"token")
+router.get('/checkauth',async(req,res)=>{
+
+   const payload= await checkForAuthenticationCookie(req,"token")
    return res.json(payload)
 
 })

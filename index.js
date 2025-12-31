@@ -25,10 +25,9 @@ const userRoute= require("./routes/user");
 const blogRoute=require("./routes/blog")
 
 app.use(cors({
-  origin: process.env.FRONT_END_URL,  // frontend URL
+  origin: process.env.FRONT_END_URL  ,  // frontend URL
   credentials: true  // if you are sending cookies
 }));
-
 
 app.get("/",
     (req,res)=>{

@@ -23,6 +23,7 @@ const cors = require("cors");
 
 const userRoute= require("./routes/user");
 const blogRoute=require("./routes/blog")
+const commentRoute=require("./routes/comments")
 
 app.use(cors({
   origin: process.env.FRONT_END_URL  ,  // frontend URL
@@ -35,6 +36,8 @@ app.get("/",
 })
 
 app.use("/api",userRoute);
-app.use("/api/blog",blogRoute)
+app.use("/api/blog",blogRoute);
+app.use("/api/comment",commentRoute)
+
 
 app.listen(PORT,()=>(console.log("server started at Port ", PORT)))

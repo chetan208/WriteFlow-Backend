@@ -18,13 +18,13 @@ const addBlogController = async (req, res) => {
     
     
         try {
-            if (req.file) {
+          if (req.file) {
           const result = await cloudinary.uploader.upload(req.file.path, {
             folder: "Blog_coverImages",
             
           });
           url=result.secure_url
-            publicId=result.public_id
+          publicId=result.public_id
         }
             
         } catch (error) {

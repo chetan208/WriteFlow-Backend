@@ -3,6 +3,7 @@ const commentModel=require("../../model/comment")
 async function addComment(req,res,blogId){
     const {content} = req.body
     const user = req.user
+    
 
     if(!user){
         console.log("unAthorized access")
@@ -16,6 +17,8 @@ async function addComment(req,res,blogId){
         await commentModel.create({
             content,
             createdBy:user._id,
+            username:user.name,
+            userAvatar:user.avatar.url,
             blogId
         })
         return res.json({

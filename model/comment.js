@@ -5,6 +5,12 @@ const commentSchema= new Schema({
         type: String,
         required: true,
     },
+    username:{
+        type:String
+    },
+    userAvatar:{
+        type:String
+    },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'user',

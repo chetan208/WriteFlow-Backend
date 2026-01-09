@@ -24,5 +24,21 @@ router.get("/get-comment/:id",async(req,res)=>{
     }
 })
 
+router.delete("/delete-comment/:id",async(req,res)=>{
+    const {id} =req.params
+    try {
+        await commentModel.findByIdAndDelete({_id:id})
+        return res.json({
+            success:true,
+            message:"comment delted successfully"
+        })
+    } catch (error) {
+        console.log("error in deleting comment", error)
+        return res.json({
+            success:false,
+            message:"error in deleting messages"
+        })
+    }
+})
 
 module.exports=router

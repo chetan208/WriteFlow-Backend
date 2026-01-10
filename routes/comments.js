@@ -41,4 +41,22 @@ router.delete("/delete-comment/:id",async(req,res)=>{
     }
 })
 
+router.patch("/edit-comment/:id", async(req,res)=>{
+    const {id} = req.params
+    const {content}= req.body
+    try {
+        await commentModel.findByIdAndUpdate(id, { content });
+        return res.json({
+            success:true,
+            message:"comment edited successfully"
+        })
+    } catch (error) {
+         console.log("error in editing comment", error)
+        return res.json({
+            success:false,
+            message:"error in editing messages"
+        })
+    }
+})
+
 module.exports=router

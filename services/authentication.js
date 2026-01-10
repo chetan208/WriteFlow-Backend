@@ -14,7 +14,6 @@ function  checkForAuthenticationCookie(req,cookieName) {
 
         try {
             const payload =  validateToken(cookieValue);
-            console.log(payload)
             return{
                 ...payload,
                 success:true,

@@ -6,7 +6,6 @@ const { createTokenForUser } = require("../services/auth");
 const userSchema = new Schema({
     fullName: {
         type: String,
-        required: true
     },
     email: {
         type: String,
@@ -18,8 +17,25 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
+    isProfileCompleted:{
+        type:Boolean,
+        default:false
+    },
     salt: {
         type: String,
+    },
+    otp:{
+        type:String,
+    },
+    expiryTime:{
+        type:Date,
+    },
+    bio:{
+        type:String,
     },
     avatar: {
         url:{

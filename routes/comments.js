@@ -3,6 +3,7 @@ const {Router}= require("express")
 const checkForAuthenticationCookieMiddelware = require('../middelwares/checkForAuthentication');
 const addComment = require("../controllers/comments/addComment");
 const getComments = require("../controllers/comments/viewComments");
+const LikeModel = require("../model/like");
 
 const router=Router();
 
@@ -58,5 +59,8 @@ router.patch("/edit-comment/:id", async(req,res)=>{
         })
     }
 })
+
+
+
 
 module.exports=router

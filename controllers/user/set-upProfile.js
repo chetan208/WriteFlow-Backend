@@ -1,5 +1,8 @@
 const cloudinary = require("../../config/cloudinary")
-const User = require("../../model/user")
+const User = require("../../model/user");
+const { createTokenForUser } = require("../../services/auth");
+
+
 
 async function setupProfile(req,res){
      const {fullName,bio,email}=req.body
@@ -41,8 +44,17 @@ async function setupProfile(req,res){
                 }
 
                 await user.save()
+                const token = createTokenForUser(user)
 
-                return res.json({
+                return res
+                .cookie("token", token, {
+                    httpOnly: true,
+                    secure: false,     // ❗ localhost ke liye false
+                    sameSite: "Lax",   // ❗ localhost friendly
+                    maxAge: 24 * 60 * 60 * 1000,
+                })
+                .status(200)
+                .json({
                     success:true,
                     message:"profile completed successfully"
                 })

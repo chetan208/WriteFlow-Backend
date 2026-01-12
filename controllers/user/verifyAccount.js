@@ -1,13 +1,14 @@
 const User = require("../../model/user");
+const { createTokenForUser } = require("../../services/auth");
 
 
 async function VerifyAccount(req, res, email) {
-    
-     const { code } = req.body
-     console.log(code)
+
+    const { code } = req.body
+    console.log(code)
     try {
         const user = await User.findOne({ email });
-        
+
         if (!user) {
             return res.json({
                 success: false,
@@ -22,40 +23,45 @@ async function VerifyAccount(req, res, email) {
             })
         }
 
-           
 
-            if (code !== user.otp) {
+
+        if (code !== user.otp) {
             return res.json({
                 success: false,
                 message: "Invalid OTP",
             });
         }
-            if (code === user.otp) {
-                user.isVerified = true;
-                user.otp = undefined;
-                user.expiryTime = undefined;
+        if (code === user.otp) {
+            user.isVerified = true;
+            user.otp = undefined;
+            user.expiryTime = undefined;
 
-                await user.save();
-                res.json({
-                    success: true
-                })
-            };
+            await user.save();
 
+            
 
-            return res.json({
-                success: false,
-                message: "Invalid OTP",
-            });
-
+            return res
+                
+                .json({
+                    success: true,
+                });
+        };
 
 
-        } catch (error) {
-            console.log("error in verifying user",error)
-            res.json({
-                succuss: false,
-                message: "error in veryfying"
-            })
-        }
+        return res.json({
+            success: false,
+            message: "Invalid OTP",
+        });
+
+
+
+    } catch (error) {
+        console.log("error in verifying user", error)
+        res.json({
+            succuss: false,
+            message: "error in veryfying"
+        })
     }
+}
 
 module.exports = VerifyAccount;

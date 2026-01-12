@@ -8,6 +8,7 @@ function createTokenForUser(user){
     email:user.email,
     name:user.fullName,
     avatar:user.avatar,
+    bio:user.bio
    };
 
    const token=JWT.sign(payload,secret);

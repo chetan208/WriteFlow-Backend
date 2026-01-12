@@ -15,6 +15,7 @@ const router = Router();
 const { Resend } = require("resend");
 const VerifyAccount = require("../controllers/user/verifyAccount");
 const setupProfile = require("../controllers/user/set-upProfile");
+const sendOTP = require("../services/sendEmail");
 
 
 
@@ -30,7 +31,7 @@ function generateOTP() {
   const { email, password } = req.body;
   const otp = generateOTP()
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+ 
 
   if (!email || !password) {
     return res.status(400).json({ message: "Missing fields" });
@@ -52,27 +53,12 @@ function generateOTP() {
     existingUser.password=password
 
     await existingUser.save()
-
-
-
-    await resend.emails.send({
-      from: 'Blogit <onboarding@resend.dev>',
-      to: email,
-      subject: 'Verify your email',
-      html: `
-    <h2>Verify your Blogit account</h2>
-    <p>Your OTP is <b>${otp}</b></p>
-  `
-
-    });
+    await sendOTP(email,otp)
 
     res.status(201).json({
       success: true,
       message: "Account created successfully",
     });
-
-
-
   }
 
   else{
@@ -83,15 +69,7 @@ function generateOTP() {
     expiryTime
   });
 
-  await resend.emails.send({
-    from: 'Blogit <onboarding@resend.dev>',
-    to: email,
-    subject: 'Verify your email',
-    html: `
-    <h2>Verify your Blogit account</h2>
-    <p>Your OTP is <b>${otp}</b></p>
-  `
-  });
+  await sendOTP(email,otp)
   res.status(201).json({
     success: true,
     message: "Account created successfully",

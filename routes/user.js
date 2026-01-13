@@ -16,6 +16,8 @@ const { Resend } = require("resend");
 const VerifyAccount = require("../controllers/user/verifyAccount");
 const setupProfile = require("../controllers/user/set-upProfile");
 const sendOTP = require("../services/sendEmail");
+const changeProfile = require("../controllers/settings/profile");
+const changePassword = require("../controllers/settings/changePassword");
 
 
 
@@ -146,5 +148,13 @@ router.post("/setup-profile",upload.single("profilePic"),async(req,res)=>{
   await setupProfile(req,res)
 })
 
+router.post("/change-profile",checkForAuthenticationCookieMiddelware("token"),upload.single("profilePic"),async(req,res)=>{
+  await changeProfile(req,res)
+})
+
+router.post("/change-password",checkForAuthenticationCookieMiddelware("token"),async(req,res)=>{
+  await changePassword(req,res)
+}
+)
 
 module.exports = router;

@@ -79,6 +79,22 @@ userSchema.static('matchPasswordAndGenerateToken', async function (email, passwo
     return token;
 });
 
+userSchema.method('comparePassword', function (password) {
+    const user = this;
+    const salt = user.salt;
+    const hashedPassword = user.password;
+
+    const userProvidedhash = createHmac("sha256", salt)
+        .update(password)
+        .digest('hex');
+
+    if (hashedPassword !== userProvidedhash) return false;
+
+    if(hashedPassword === userProvidedhash) return true;
+});
+
+
+
 const User = model('user', userSchema);
 
 module.exports = User;

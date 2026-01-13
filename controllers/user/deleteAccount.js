@@ -1,11 +1,23 @@
 const User = require("../../model/user");
 const cloudinary = require("../../config/cloudinary");
+const Blog = require("../../model/blog");
+const commentModel = require("../../model/comment");
+const LikeModel = require("../../model/like");
 
 const deleteAccount = async (req, res) => {
   try {
     const userId = req.user._id;
 
     const user = await User.findByIdAndDelete(userId);
+
+    const blogs = Blog.find({ createdBy: userId });
+    
+    for await (const blog of blogs) {
+      await commentModel.deleteMany({ blogId: blog._id });
+      await LikeModel.deleteMany({ LikedOn: blog._id });
+      await cloudinary.uploader.destroy(blog.coverImageURL.publicId);
+      await Blog.deleteOne({ _id: blog._id });
+    }
 
     if (!user) {
       return res.status(404).json({

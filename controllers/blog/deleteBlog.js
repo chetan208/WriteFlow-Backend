@@ -1,5 +1,8 @@
 const Blog = require('../../model/blog')
 const cloudinary = require("../../config/cloudinary");
+const commentModel = require('../../model/comment');
+
+const likeModel = require('../../model/like');
 
 async function deleteBlog(_id,userId){
 
@@ -8,6 +11,15 @@ async function deleteBlog(_id,userId){
         const blog= await Blog.findOne({_id}) 
 
         const userIdInDb=blog.createdBy.toString()
+
+       try {
+         await commentModel.deleteMany({blogId:blog._id});
+        await likeModel.deleteMany({LikedOn:blog._id});
+        
+       } catch (error) {
+        console.log("error in deleting comments and likes associated with the blog")    
+       }
+
         if(userId === userIdInDb) {
                 await cloudinary.uploader.destroy(blog.coverImageURL.publicId);
                 await Blog.deleteOne({_id})

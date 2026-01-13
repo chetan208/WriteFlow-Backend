@@ -49,8 +49,8 @@ async function setupProfile(req,res){
                 return res
                 .cookie("token", token, {
                     httpOnly: true,
-                    secure: false,     // ❗ localhost ke liye false
-                    sameSite: "Lax",   // ❗ localhost friendly
+                    secure: true,     
+                    sameSite: "none",  
                     maxAge: 24 * 60 * 60 * 1000,
                 })
                 .status(200)

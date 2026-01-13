@@ -37,4 +37,34 @@ async function sendOTP(email, otp) {
   }
 }
 
-module.exports = sendOTP;
+async function sendContactMessage(name, email, message) {
+  try {
+    const sendSmtpEmail = {
+      sender: {
+        name: "BlogIt Contact",
+        email: "blogit.read@gmail.com", // verified sender
+      },
+      to: [
+        {
+          email: "blogit.read@gmail.com",
+        },
+      ],
+      subject: "New Contact Message",
+      htmlContent: `
+        <h2>Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    };
+
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log("Contact message sent");
+  } catch (error) {
+    console.error("Brevo error:", error);
+    throw error;
+  }
+}
+
+module.exports = { sendOTP, sendContactMessage };

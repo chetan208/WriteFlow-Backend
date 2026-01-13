@@ -4,11 +4,7 @@ const {addBlogController,ViewBlog, getBlog,deleteBlog,editBlogController} = requ
 const checkForAuthenticationCookieMiddelware = require('../middelwares/checkForAuthentication');
 const generateContent = require("../AI/generateContent");
 const LikeModel = require("../model/like");
-
-
-
-
-
+const Blog = require("../model/blog");
 
 
 const router=Router();
@@ -140,6 +136,17 @@ router.get("/like/:id",checkForAuthenticationCookieMiddelware("token"),async(req
             message:"error in fetching likes"
         })
     }
+})
+
+router.get("/user-blogs/:id",async(req,res)=>{
+    const {id}= req.params;
+
+    const blogs = await Blog.find({createdBy:id});
+
+    res.json({
+        success:true,
+        blogs:blogs
+    })
 })
 
 module.exports=router;

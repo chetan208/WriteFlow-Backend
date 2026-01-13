@@ -15,9 +15,10 @@ const router = Router();
 const { Resend } = require("resend");
 const VerifyAccount = require("../controllers/user/verifyAccount");
 const setupProfile = require("../controllers/user/set-upProfile");
-const sendOTP = require("../services/sendEmail");
 const changeProfile = require("../controllers/settings/profile");
 const changePassword = require("../controllers/settings/changePassword");
+
+const {sendOTP,sendContactMessage} = require("../services/sendEmail");
 
 
 
@@ -131,7 +132,10 @@ router.post('/logout', (req, res) => {
   res.json({ success: true });
 })
 
-router.delete("/delete-account", checkForAuthenticationCookieMiddelware("token"), deleteAccount)
+router.delete("/delete-account", checkForAuthenticationCookieMiddelware("token"), async (req, res) => {
+  
+  await deleteAccount(req, res);
+})
 
 router.get("/finduser/:id", async (req, res) => {
   const { id } = req.params;
@@ -156,5 +160,22 @@ router.post("/change-password",checkForAuthenticationCookieMiddelware("token"),a
   await changePassword(req,res)
 }
 )
+
+router.post("/contact",async(req,res)=>{
+const {name,email,message}= req.body;
+try {
+  await sendContactMessage(name,email,message);
+res.json({
+  success:true,
+  message:"message sent successfully" 
+})
+} catch (error) {
+  console.log("error in sending contact message",error)
+  res.json({
+    success:false,
+    message:"error in sending message"
+  })
+}
+})
 
 module.exports = router;

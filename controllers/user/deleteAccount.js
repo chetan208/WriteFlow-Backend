@@ -8,7 +8,28 @@ const deleteAccount = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const user = await User.findByIdAndDelete(userId);
+    
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+
+    
+
+    const isMatched = await user.comparePassword(req.body.password);
+   
+    if (!isMatched) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid password",
+      });
+    } 
+
 
     const blogs = Blog.find({ createdBy: userId });
     
@@ -19,19 +40,15 @@ const deleteAccount = async (req, res) => {
       await Blog.deleteOne({ _id: blog._id });
     }
 
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
+    
     await cloudinary.uploader.destroy(user.avatar.publicId);
     res.clearCookie("token", {
       httpOnly: true,
       sameSite: "strict",
       secure: true, // prod me
     });
+
+    await user.deleteOne();
 
     res.status(200).json({
       success: true,

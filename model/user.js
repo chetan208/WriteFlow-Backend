@@ -40,10 +40,12 @@ const userSchema = new Schema({
     avatar: {
         url:{
             type: String,
+            default:"https://res.cloudinary.com/drdivev7j/image/upload/v1768556068/Blogit_ProfileImages/kjxfvmds0n9mxzstcqcv.jpg"
         },
         publicId:{
             
             type:String,
+            default: null,
         }
     }
 }, { timestamps: true })
